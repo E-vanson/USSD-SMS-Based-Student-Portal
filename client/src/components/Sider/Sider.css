@@ -1,0 +1,13 @@
+.demo-logo img {
+  width: 100%;
+  filter: grayscale(100%);
+}
+
+#sider {
+  background: #ced0ce;
+  color: white;
+  min-height: 100vh;
+}
+.main-menu{
+  margin-top: -3px;
+}

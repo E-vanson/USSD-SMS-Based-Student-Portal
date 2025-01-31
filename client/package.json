@@ -1,0 +1,35 @@
+{
+  "name": "student-portal",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^5.12.8",
+    "@ant-design/icons": "^5.2.6",
+    "luxon": "^3.4.4",
+    "react": "^18.2.0",
+    "react-countup": "^6.5.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.1",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^3.5.1",
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "start": "npm run start",
+    "dev": "npm run start:frontend",
+    "start:frontend": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
