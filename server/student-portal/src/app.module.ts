@@ -14,9 +14,10 @@ import { ResultsModule } from './results/results.module';
 
 @Module({
   imports: [
-    // MongooseModule.forRoot(process.env.DATABASE_URI!, { dbName: process.env.DATABASE_NAME,}),
+    ConfigModule.forRoot({ isGlobal: true }), ///for global env configuration
+    MongooseModule.forRoot(process.env.DATABASE_URI!, { dbName: process.env.DATABASE_NAME,}), 
     AdminModule, StudentModule, CourseModule, UnitModule, PaymentModule, NotificationsModule, ResultsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService], 
 })
 export class AppModule {}
