@@ -17,7 +17,7 @@ async function bootstrap() {
 
 
    await app.listen(PORT, () => {
-        Logger.log(`🚀 Application running at port ${PORT}: The uri ${process.env.DATABASE_URI!}`);
+        Logger.log(`🚀 Application running at port ${PORT} `);
     });
 }
  

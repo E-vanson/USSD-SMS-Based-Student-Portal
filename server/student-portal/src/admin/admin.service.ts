@@ -19,17 +19,6 @@ export class AdminService {
         return admin;
     }
 
-    async updateAdmin(id: string, body: UpdateAdminDto): Promise<AdminPayload> {
-        await this.adminModel.updateOne({ _id: id }, body);
-        const updatedAdmin = await this.adminModel.findById(id);
-
-        return updatedAdmin!;
-    }
-
-    async deleteAdmin(id: string) {
-        await this.adminModel.deleteOne({ _id: id });
-    }
-
     async getAdmins(): Promise<AdminPayload[]> {
         const admins = await this.adminModel.find();
 
@@ -41,5 +30,16 @@ export class AdminService {
 
         return admin!;
     }
-    
+
+    async updateAdmin(id: string, body: UpdateAdminDto): Promise<AdminPayload> {
+        await this.adminModel.updateOne({ _id: id }, body);
+        const updatedAdmin = await this.adminModel.findById(id);
+
+        return updatedAdmin!;
+    }
+
+    async deleteAdmin(id: string) {
+        await this.adminModel.deleteOne({ _id: id });
+    }
+   
 }

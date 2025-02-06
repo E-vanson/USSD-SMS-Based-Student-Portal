@@ -10,9 +10,9 @@ export class AdminController {
 
     @Get()
     getAdmins() {
-        return this.adminService.getAdmins;
+        return this.adminService.getAdmins();
     }
-
+ 
     @Get('/:id')
     getAdmin(@Param('id') id: string) {
         return this.adminService.getAdmin(id);
@@ -24,7 +24,12 @@ export class AdminController {
     }
 
     @Put('/:id')
-    updateAdmin(@Param() id: string, @Body() body: UpdateAdminDto) {
+    updateAdmin(@Param('id') id: string, @Body() body: UpdateAdminDto) {
         return this.adminService.updateAdmin(id, body);
+    }
+
+    @Delete('/:id')
+    deleteAdmin(@Param('id') id: string) {
+        return this.adminService.deleteAdmin(id);
     }
 }
