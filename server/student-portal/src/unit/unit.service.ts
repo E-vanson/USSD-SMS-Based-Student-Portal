@@ -21,6 +21,10 @@ export class UnitService {
     async getUnits(): Promise<UnitsPayload[]>{
         const units = await this.unitsModel.find();
 
+        if (!units) {
+            throw new NotFoundException(`No Units found `);
+        }
+
         return units;
     }
 
@@ -46,8 +50,14 @@ export class UnitService {
     }
 
     async deleteUnit(id: string) {
+        const delUnit = await this.unitsModel.findById(id);
+
+        if (!delUnit) {
+            throw new NotFoundException(`Unit with id:${id} not found `);
+        }
+
         await this.unitsModel.deleteOne({ _id: id });
     }
-    
+
 }
 
