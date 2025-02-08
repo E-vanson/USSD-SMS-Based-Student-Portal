@@ -13,6 +13,9 @@ export class Admin{
     email: string;
 
     @Prop()
+    password: string;
+
+    @Prop()
     phoneNo: string;
 
     @Prop()

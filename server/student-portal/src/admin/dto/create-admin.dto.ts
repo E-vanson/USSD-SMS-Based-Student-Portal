@@ -9,6 +9,9 @@ export class CreateAdminDto{
     email: string;
 
     @IsString()
+    password: string;
+
+    @IsString()
     phoneNo: string;
 
     @IsArray()
