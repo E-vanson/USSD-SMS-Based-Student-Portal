@@ -4,7 +4,7 @@ import { UnitService } from './unit.service';
 import { CreateUnitDto } from './dto/create-unit.dto';
 import { UpdateUnitDto } from './dto/update-unit.dto';
 
-@Controller({path: 'unit', version: '1'})
+@Controller({path: 'units', version: '1'})
 export class UnitController {
     constructor(private unitsService: UnitService) { }
     
