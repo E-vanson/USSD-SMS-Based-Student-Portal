@@ -30,7 +30,8 @@ export class Student{
                 unitId: mongoose.Schema.Types.ObjectId,
                 cat1Grade: string,
                 cat2Grade: string,
-                examGrade: string
+                examGrade: string,
+                finalGrade: string
             }
     ]
 }
