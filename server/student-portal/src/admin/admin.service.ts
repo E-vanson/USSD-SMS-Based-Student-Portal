@@ -1,6 +1,7 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
 
 import { Admin } from './schema/admin.schema';
 import { CreateAdminDto } from './dto/create-admin.dto';
@@ -13,7 +14,19 @@ export class AdminService {
     constructor(@InjectModel(Admin.name) private adminModel: Model<Admin>){}
 
     async createAdmin(body: CreateAdminDto): Promise<AdminPayload> {
-        const newAdmin = new this.adminModel(body);
+        
+        const salt = await bcrypt.genSalt();
+
+        const passwordHash = await bcrypt.hash(body.password, salt);
+        const newAd = {
+            fullName: body.fullName,
+            email: body.email,
+            phoneNo: body.phoneNo,
+            notifications: body.notifications,
+            password: passwordHash
+        };
+
+        const newAdmin = new this.adminModel(newAd);
         const admin = await newAdmin.save();
 
         return admin;
@@ -26,9 +39,19 @@ export class AdminService {
     }
 
     async getAdmin(id: string): Promise<AdminPayload> {
-        const admin = await this.adminModel.findById({ _id: id });
+        const admin = await this.adminModel.findOne({ _id: id });
 
         return admin!;
+    }
+
+    async getAdminByEmail(email: string): Promise<AdminPayload>{
+        const admin = await this.adminModel.findOne({ email: email });
+
+        if (!admin) {
+            throw new NotFoundException(`Admin of email ${email} not found`)
+        }
+
+        return admin;
     }
 
     async updateAdmin(id: string, body: UpdateAdminDto): Promise<AdminPayload> {

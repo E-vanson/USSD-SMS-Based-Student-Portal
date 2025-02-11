@@ -4,6 +4,25 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 export type StudentDocument = HydratedDocument<Student>;
 
 @Schema()
+export class UnitsGradeSchema {
+    @Prop()
+    unitId: mongoose.Schema.Types.ObjectId;
+
+    @Prop()
+    cat1Grade: string;
+
+    @Prop()
+    cat2Grade: string;
+
+    @Prop()
+    examGrade: string;
+
+    @Prop()
+    finalGrade: string;
+
+}
+
+@Schema()
 export class Student{
 
     @Prop()
@@ -16,6 +35,9 @@ export class Student{
     phoneNo: string;
 
     @Prop()
+    password: string;
+
+    @Prop()
     regNo: string;
 
     @Prop({ type: [{ type: [mongoose.Schema.Types.ObjectId], ref: 'Courses' }] })
@@ -24,16 +46,8 @@ export class Student{
     @Prop()
     notifications: string[];    
 
-    @Prop({ type: [{ type: [mongoose.Schema.Types.ObjectId], ref: 'Units' }] })
-    units: [
-            {
-                unitId: mongoose.Schema.Types.ObjectId,
-                cat1Grade: string,
-                cat2Grade: string,
-                examGrade: string,
-                finalGrade: string
-            }
-    ]
+    @Prop({ type: [UnitsGradeSchema] })
+    units: UnitsGradeSchema[]
 }
 
 

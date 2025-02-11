@@ -14,13 +14,15 @@ export class StudentService {
     
     async createStudent(body: CreateStudentDto): Promise<StudentPayload>{
         const courseId = body.course;
+        console.log(courseId, " The course id.....")
         const course = await this.courseService.getCourse(courseId);
 
         if (!course) {
             throw new NotFoundException(`Course not found `);
         }
 
-        const units = course.units;
+        const units = course?.units?.flat();
+        console.log(units, " the units....")
 
         const name = body.fullName;
         const email = body.email;
@@ -63,6 +65,16 @@ export class StudentService {
 
         if (!student) {
             throw new NotFoundException(`No Student found of id ${id} `);
+        }
+
+        return student;
+    }
+
+    async getStudentByRegNo(regNo: string): Promise<StudentPayload>{
+        const student = await this.studentModel.findOne({ regNo: regNo });
+
+        if (!student) {
+            throw new NotFoundException(`No Student found of regNo ${regNo} `);
         }
 
         return student;
