@@ -3,11 +3,13 @@ import { Controller, Post, Put, Get, Delete, Body, Param } from '@nestjs/common'
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import { Public } from 'src/decorators/auth.decorator';
 
 @Controller({path: 'admin', version: '1'})
 export class AdminController {
     constructor(private adminService: AdminService){}
 
+    @Public()
     @Get()
     getAdmins() {
         return this.adminService.getAdmins();
