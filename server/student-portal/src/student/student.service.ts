@@ -1,6 +1,7 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, NotAcceptableException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 import { Student } from './schema/student.schema';
 import { CourseService } from 'src/course/course.service';
@@ -14,27 +15,35 @@ export class StudentService {
     
     async createStudent(body: CreateStudentDto): Promise<StudentPayload>{
         const courseId = body.course;
-        console.log(courseId, " The course id.....")
         const course = await this.courseService.getCourse(courseId);
 
         if (!course) {
             throw new NotFoundException(`Course not found `);
         }
 
-        const units = course?.units?.flat();
-        console.log(units, " the units....")
+        const units = course?.units?.flat();        
+
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(body.password, salt);
 
         const name = body.fullName;
         const email = body.email;
         const phoneNo = body.phoneNo;
         const regNo = body.regNo;
         const not = body.notifications;
+        const password = passwordHash;
+
+        const exStudent = await this.studentModel.findOne({ regNo: regNo });
+        if (exStudent) {
+            throw new NotAcceptableException(`User with regNo ${regNo} already exists`);
+        }
 
         const newStudent = new this.studentModel({
             fullName: name,
             email: email,
             phoneNo: phoneNo,
             regNo: regNo,
+            password: password,
             notifications: not,
             units: units?.map(unitId => ({
                 unitId: unitId,

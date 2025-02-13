@@ -3,7 +3,10 @@ import { Controller, Post, Put, Get, Delete, Body, Param, UseGuards } from '@nes
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import { Roles } from 'src/decorators/roles.decorators';
+import { Role } from 'src/roles/roles.enum';
 
+@Roles(Role.Admin)
 @Controller({path: 'admin', version: '1'})
 export class AdminController {
     constructor(private adminService: AdminService){}

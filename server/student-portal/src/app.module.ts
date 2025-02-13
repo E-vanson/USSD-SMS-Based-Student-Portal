@@ -14,6 +14,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { ResultsModule } from './results/results.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -24,11 +25,11 @@ import { RolesModule } from './roles/roles.module';
           inject: [ConfigService],
           useFactory: async (configService: ConfigService) => ({
             secret: configService.get<string>('JWT_SECRET'),
-            signOptions: { expiresIn: '120s' },
+            signOptions: { expiresIn: '1hr' },
           }),
         }),
     MongooseModule.forRoot(process.env.DATABASE_URI!, { dbName: process.env.DATABASE_NAME,}), 
-    AdminModule, StudentModule, CourseModule, UnitModule, PaymentModule, NotificationsModule, ResultsModule, AuthModule, RolesModule],
+    AdminModule, StudentModule, CourseModule, UnitModule, PaymentModule, NotificationsModule, ResultsModule, AuthModule, RolesModule, UtilsModule],
   controllers: [AppController],
   providers: [AppService], 
 })

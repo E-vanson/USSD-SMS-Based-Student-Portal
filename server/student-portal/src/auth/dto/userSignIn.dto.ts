@@ -1,9 +1,9 @@
 import { IsString } from "class-validator";
 
-export class SignInDto{
+export class UserSigninDto{
 
     @IsString()
-    variant: string;
+    regNo: string;
 
     @IsString()
     password: string;

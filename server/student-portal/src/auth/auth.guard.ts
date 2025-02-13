@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    console.log(isPublic, " is the route allowed.....")
+    
     if (isPublic) {
       return true;
     }
