@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { AdminService } from 'src/admin/admin.service';
 import { StudentService } from 'src/student/student.service';
 import { SignInDto } from './dto/signIn.dto';
+import { Public } from 'src/decorators/auth.decorator';
 
 @Injectable()
 export class AuthService {
@@ -12,8 +13,9 @@ export class AuthService {
         private adminService: AdminService,
         private studentService: StudentService,
         private jwtService: JwtService
-    ) { }
+    ) { } 
 
+    @Public()
     async signIn(body: SignInDto): Promise<{ access_token: string }> {
         const admin = await this.adminService.getAdminByEmail(body.variant);
         if (admin) {

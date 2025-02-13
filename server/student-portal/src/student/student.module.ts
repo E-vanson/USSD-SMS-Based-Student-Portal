@@ -5,9 +5,14 @@ import { CourseModule } from 'src/course/course.module';
 import { Student, StudentSchema } from './schema/student.schema';
 
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{name: Student.name, schema:StudentSchema}]), CourseModule],
+  imports: [
+    MongooseModule.forFeature([{ name: Student.name, schema: StudentSchema }]),
+    
+    CourseModule
+  ],
   providers: [StudentService],
   controllers: [StudentController],
   exports: [StudentService]
