@@ -32,7 +32,7 @@ export class AuthService {
     }
 
     async studentSignIn(body: UserSigninDto): Promise<{ access_token: string }>  {
-        const student = await this.studentService.getStudentByRegNo(body.regNo);
+        const student =  await this.studentService.getStudentByRegNo(body.regNo);
 
         if (!student) {
             throw new NotFoundException("Invalid Credentials");
