@@ -15,6 +15,7 @@ import { ResultsModule } from './results/results.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
 import { UtilsModule } from './utils/utils.module';
+import { UssdModule } from './ussd/ussd.module';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { UtilsModule } from './utils/utils.module';
           }),
         }),
     MongooseModule.forRoot(process.env.DATABASE_URI!, { dbName: process.env.DATABASE_NAME,}), 
-    AdminModule, StudentModule, CourseModule, UnitModule, PaymentModule, NotificationsModule, ResultsModule, AuthModule, RolesModule, UtilsModule],
+    AdminModule, StudentModule, CourseModule, UnitModule, PaymentModule, NotificationsModule, ResultsModule, AuthModule, RolesModule, UtilsModule, UssdModule],
   controllers: [AppController],
   providers: [AppService], 
 })
