@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
 import * as UssdMenuBuilder from 'ussd-menu-builder';
 import { Request, Response } from 'express';
+import { StudentService } from 'src/student/student.service';
 @Injectable()
 export class UssdService {
-    constructor(@Inject('USSD_MENU') private menu: UssdMenuBuilder) {
+    constructor(@Inject('USSD_MENU') private menu: UssdMenuBuilder, private studentService:StudentService) {
         this.initializeMenu()
      }
     
@@ -23,6 +24,40 @@ export class UssdService {
         '3': 'Contact Support',
       }
     });
+        
+        
+        this.menu.state("Login", {
+            run: () => {
+                this.menu.con("Enter your Registration Number: ")
+            },
+            next: {                
+        '*[a-zA-Z]+': 'registration.no'
+            }
+        })    
+
+        this.menu.state("registration.no", {
+            run: () => {
+                let regNo = this.menu.val;
+                const stude = this.studentService.getStudentByRegNo(regNo);
+                if (!stude) {
+                    this.menu.end("Invalid Credentials")
+                }
+
+                this.menu.con("Enter your password:")
+            },
+            next: {
+        '*[a-zA-Z0-9]+': 'registration.password'
+            }            
+        })
+
+        // this.menu.state("registration.password", {
+        //     run: () => {
+
+        //     }
+        // })
+
+        
+        
   }
     
     
