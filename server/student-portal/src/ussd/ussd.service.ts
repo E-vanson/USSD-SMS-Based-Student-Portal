@@ -43,18 +43,29 @@ export class UssdService {
                     this.menu.end("Invalid Credentials")
                 }
 
-                this.menu.con("Enter your password:")
+                this.menu.con("Enter your password:") 
             },
             next: {
         '*[a-zA-Z0-9]+': 'registration.password'
             }            
         })
 
-        // this.menu.state("registration.password", {
-        //     run: () => {
-
-        //     }
-        // })
+        this.menu.state("registration.password", {
+            run: () => {
+                this.menu.con(
+                    "Select a service: " + 
+                    "\n1. Get Examination Results" +
+                    "\n2. Pay Fees" +
+                    "\n3. Get Latest Updates"
+                )
+            },
+            next: {
+                1: "Get Examination Results",
+                2: "Pay Fees",
+                3: "Get Latest Updates"
+            },
+            defaultNext: "invalidOption",
+        })
 
         
         
