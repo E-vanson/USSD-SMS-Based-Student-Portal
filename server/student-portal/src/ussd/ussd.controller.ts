@@ -10,9 +10,6 @@ export class UssdController {
     
     @Post('menu')
     async menu(@Req() req: Request, @Res() res: Response) {
-        // const menu = this.ussdService.getMenu()
-        // return menu.run(req.body, (result: any) => res.send(result));
-
         return this.ussdService.menuStates(req, res);
     }
 
