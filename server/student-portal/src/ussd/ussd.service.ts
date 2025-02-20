@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import * as UssdMenuBuilder from 'ussd-menu-builder';
 import { Request, Response } from 'express';
 import { StudentService } from 'src/student/student.service';
-@Injectable()  24302327 itxlysa
+@Injectable()
 export class UssdService {
     constructor(@Inject('USSD_MENU') private menu: UssdMenuBuilder, private studentService:StudentService) {
         this.initializeMenu()
