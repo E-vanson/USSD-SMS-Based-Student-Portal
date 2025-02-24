@@ -3,9 +3,10 @@ import { UssdService } from './ussd.service';
 import { UssdController } from './ussd.controller';
 import * as UssdMenuBuilder from 'ussd-menu-builder';
 import { StudentModule } from 'src/student/student.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [StudentModule],
+  imports: [StudentModule, AuthModule],
   providers: [
     UssdService,
     {

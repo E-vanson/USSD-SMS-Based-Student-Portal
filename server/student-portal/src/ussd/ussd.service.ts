@@ -2,14 +2,16 @@ import { Injectable, Inject } from '@nestjs/common';
 import * as UssdMenuBuilder from 'ussd-menu-builder';
 import { Request, Response } from 'express';
 import { StudentService } from 'src/student/student.service';
+import { AuthService } from 'src/auth/auth.service';
 @Injectable()
 export class UssdService {
-    constructor(@Inject('USSD_MENU') private menu: UssdMenuBuilder, private studentService:StudentService) {
+    constructor(@Inject('USSD_MENU') private menu: UssdMenuBuilder, private studentService:StudentService, private authService:AuthService) {
         this.initializeMenu()
      }
     
     private initializeMenu() {
         let regNo: string;
+
     this.menu.startState({
       run: () => {
         this.menu.con(
@@ -24,70 +26,63 @@ export class UssdService {
         '2': 'Terms and Condition',
         '3': 'Contact Support',
       }
-    });
-        
+    });                
         
         this.menu.state("Login", {
             run: () => {
                 this.menu.con("Enter your Registration Number: ")
             },
             next: {                
-        '*[a-zA-Z]+': 'registration.no'
+        '*[a-zA-Z0-9]+': 'validateRegNo'
             }
         })    
 
-        this.menu.state("registration.no", {
-            run: () => {
-                    regNo = this.menu.val;
-                    const stude = this.studentService.getStudentByRegNo(regNo);
-                    if (!stude) {
-                        this.menu.end("Invalid Credentials")
-                    }
-
-                this.menu.con("Enter your password:") 
-            },
-            next: {
-                '*[a-zA-Z0-9]+': () => {
-                    return new Promise(async (resolve, reject) => {
-                        try {
-                            const regNo =  this.menu.val; 
-                            const stude = await this.studentService.getStudentByRegNo(regNo);
-
-                            if (!stude) {                        
-                                this.menu.end("Invalid Credentials"); // End if not found                                
-                                reject(); // Reject the promise to prevent further execution                                
-                            } else {                                
-                                resolve('registration.password'); // Proceed to the next state                                
-                            }                                                        
-                        } catch (error) {                            
-                            if (error.status === 404) {                                
-                                this.menu.end("Invalid Credentials"); // Handle 404 case gracefully                                
-                            } else {                                
-                                this.menu.end("An error occurred, please try again."); // Handle other errors                                
-                            }                            
-                            reject();                                                         
-                        }
-                    })
-        }
+        this.menu.state("validateRegNo", {
+            run: async () => {                
+                const regNoo = this.menu.val; 
+                regNo = regNoo;
+                const student = await this.studentService.getStudentByRegNo(regNoo);
+        
+                if (!student) {            
+                    this.menu.end("Invalid Credentials");                    
+                } else {                                   
+                    // this.menu.session.set("regNo", regNoo);                    
+                    this.menu.con("Enter your password:");                    
+                }                                
+            },            
+            next: {                        
+                '*[a-zA-Z0-9]+': 'validatePassword'                
             }            
         })
 
-        this.menu.state("registration.password", {
-            run: () => {
-                this.menu.con(
-                    "Select a service: " + 
-                    "\n1. Get Examination Results" +
-                    "\n2. Pay Fees" +
-                    "\n3. Get Latest Updates"
-                )
-            },
-            next: {
-                1: "Get Examination Results",
-                2: "Pay Fees",
-                3: "Get Latest Updates"
-            },
-            defaultNext: "invalidOption",
-        })
+
+        this.menu.state("validatePassword", {            
+            run: async () => {                
+                // const regNo = await this.menu.session.get("regNo"); 
+                const regNoo = regNo
+                const password = this.menu.val;    
+                const credentials = {
+                    regNo: regNoo,
+                    password: password
+                }
+                const student = await this.authService.studentSignIn(credentials);        
+                if (!student) {            
+                    this.menu.end("Invalid Credentials");                    
+                } else {                    
+                    this.menu.con(                
+                        "Select a service: " +                        
+                        "\n1. Get Examination Results" +                        
+                        "\n2. Pay Fees" +                        
+                        "\n3. Get Latest Updates"                        
+                    );                    
+                }                
+            },            
+            next: {        
+                1: "Get Examination Results",                
+                2: "Pay Fees",        
+                3: "Get Latest Updates"        
+            }            
+        });        
 
         this.menu.state("Get Examination Results", {
             run: () => {
