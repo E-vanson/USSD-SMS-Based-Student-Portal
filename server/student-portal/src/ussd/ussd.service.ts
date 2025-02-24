@@ -9,6 +9,7 @@ export class UssdService {
      }
     
     private initializeMenu() {
+        let regNo: string;
     this.menu.startState({
       run: () => {
         this.menu.con(
@@ -37,16 +38,37 @@ export class UssdService {
 
         this.menu.state("registration.no", {
             run: () => {
-                let regNo = this.menu.val;
-                const stude = this.studentService.getStudentByRegNo(regNo);
-                if (!stude) {
-                    this.menu.end("Invalid Credentials")
-                }
+                    regNo = this.menu.val;
+                    const stude = this.studentService.getStudentByRegNo(regNo);
+                    if (!stude) {
+                        this.menu.end("Invalid Credentials")
+                    }
 
                 this.menu.con("Enter your password:") 
             },
             next: {
-        '*[a-zA-Z0-9]+': 'registration.password'
+                '*[a-zA-Z0-9]+': () => {
+                    return new Promise(async (resolve, reject) => {
+                        try {
+                            const regNo =  this.menu.val; 
+                            const stude = await this.studentService.getStudentByRegNo(regNo);
+
+                            if (!stude) {                        
+                                this.menu.end("Invalid Credentials"); // End if not found                                
+                                reject(); // Reject the promise to prevent further execution                                
+                            } else {                                
+                                resolve('registration.password'); // Proceed to the next state                                
+                            }                                                        
+                        } catch (error) {                            
+                            if (error.status === 404) {                                
+                                this.menu.end("Invalid Credentials"); // Handle 404 case gracefully                                
+                            } else {                                
+                                this.menu.end("An error occurred, please try again."); // Handle other errors                                
+                            }                            
+                            reject();                                                         
+                        }
+                    })
+        }
             }            
         })
 

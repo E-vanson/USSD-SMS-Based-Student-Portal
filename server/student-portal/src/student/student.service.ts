@@ -79,14 +79,18 @@ export class StudentService {
         return student;
     }
 
-    async getStudentByRegNo(regNo: string): Promise<StudentPayload>{
+    async getStudentByRegNo(regNo: string): Promise<{success: boolean;  message?: string; student?:StudentPayload}>{
+         try {
         const student = await this.studentModel.findOne({ regNo: regNo });
 
         if (!student) {
-            throw new NotFoundException(`No Student found of regNo ${regNo} `);
+            return  {success: false, message: `No student found with registration number ${regNo}` };
         }
 
-        return student;
+        return { success: true, student };
+    } catch (error) {
+        return { success: false, message: "An error occurred while fetching student details" };
+    }
     }
 
     async updateStudent(id: string, body: UpdateStudentDto): Promise<StudentPayload>{

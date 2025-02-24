@@ -38,9 +38,9 @@ export class AuthService {
             throw new NotFoundException("Invalid Credentials");
         }
 
-        const isMatch = await bcrypt.compare(body.password ,student.password);
+        const isMatch = await bcrypt.compare(body.password ,student.student?.password);
         if (isMatch) {
-            const payload = { email: student.email }
+            const payload = { email: student.student?.email }
             return { access_token: await this.jwtService.signAsync(payload)}
         } else {
             throw new NotFoundException(`Invalid Credentials`)
