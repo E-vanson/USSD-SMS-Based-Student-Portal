@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -16,7 +16,8 @@ export class AuthService {
     ) { }   
 
     async adminSignIn(body: AdminSignInDto): Promise<{ access_token: string }>  {
-        const admin = await this.adminService.getAdminByEmail(body.email);
+        try {
+            const admin = await this.adminService.getAdminByEmail(body.email);
 
         if (!admin) {
             throw new NotFoundException("Invalid Credentials")
@@ -29,10 +30,15 @@ export class AuthService {
         } else {
             throw new NotFoundException(`Invalid Credentials`)
         }
+        } catch (error) {
+            throw new InternalServerErrorException("Server Errror");
+        }
+        
     }
 
     async studentSignIn(body: UserSigninDto): Promise<{ access_token: string }>  {
-        const student = await this.studentService.getStudentByRegNo(body.regNo);
+        try {
+            const student = await this.studentService.getStudentByRegNo(body.regNo);
 
         if (!student) {
             throw new NotFoundException("Invalid Credentials");
@@ -45,5 +51,10 @@ export class AuthService {
         } else {
             throw new NotFoundException(`Invalid Credentials`)
         } 
+            
+        } catch (error) {
+            throw new InternalServerErrorException("Server Errror");
+        }
+        
     }
 }
