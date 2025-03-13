@@ -8,10 +8,10 @@ const { Link } = Typography;
 const AppFooter = () => {
   return (
     <Footer id="footer" style={{ textAlign: "center" }}>
-      Portal ©2024 Created by{" "}
+      Portal ©2025 Created by{" "}
       <Tooltip title="Github">
-        <Link href="https://github.com/CHAUDHARYS1" target="_blank" style={{color:"white", textDecoration:"underline"}}>
-          Shital Chaudhary
+        <Link href="https://github.com/E-vanson" target="_blank" style={{color:"white", textDecoration:"underline"}}>
+          Evanson Kamau
         </Link>
       </Tooltip>
     </Footer>

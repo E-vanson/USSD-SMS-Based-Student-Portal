@@ -23,7 +23,7 @@ import UserActivityMonitor from "./components/User/userActivityTracker";
 import Logout from "./components/Login/Logout";
 import AppFooter from "./components/Footer/Footer";
 import HomePage from "./pages/HomePage";
-import Stats from "./pages/StatsPage";
+import Stats from "./pages/stats/StatsPage";
 
 
 const { Header } = Layout;

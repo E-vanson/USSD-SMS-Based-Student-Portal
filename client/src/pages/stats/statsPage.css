@@ -1,0 +1,34 @@
+/* StatsPage.css */
+.stats-card {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.stats-table {
+    margin-top: 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.stats-table .ant-table {
+    border-radius: 8px;
+}
+
+.stats-table .ant-table-thead>tr>th {
+    background: #fafafa !important;
+    font-weight: 600;
+}
+
+.action-buttons button {
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .stats-table {
+        overflow-x: auto;
+    }
+}
