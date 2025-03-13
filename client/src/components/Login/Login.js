@@ -9,7 +9,7 @@ const { Title } = Typography;
 
 const Login = () => {
   const { setIsLoggedIn } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,13 +20,13 @@ const Login = () => {
     setLoading(true);
     console.log("Login form values:", values);
 
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/users/login`, {
+    const response = await fetch(`http://localhost:4000/v1/auth/admin/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: values.username,
+        email: values.email,
         password: values.password,
       }),
     });
@@ -65,21 +65,21 @@ const Login = () => {
           autoComplete="off"
         >
           <Form.Item
-            name="username"
-            label={<span style={{ padding: "0px" }}>Username</span>}
+            name="email"
+            label={<span style={{ padding: "0px" }}>Email</span>}
             rules={[
-              { required: true, message: "Please enter your username!" },
-              { min: 3, message: 'Username must be minimum 3 characters.' },
-              { max: 30, message: 'Username must be maximum 30 characters.' },
+              { required: true, message: "Please enter your Email!" },
+              { min: 3, message: 'Email must be minimum 3 characters.' },
+              { max: 30, message: 'Email must be maximum 30 characters.' },
 
             ]}
             hasFeedback
             validateDebounce={1000}
           >
             <Input
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="bg-white input-active border-radius-0 border-active"
               bordered={false}
             />

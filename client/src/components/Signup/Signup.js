@@ -10,27 +10,26 @@ const { Option } = Select;
 const { Title } = Typography;
 
 const Signup = () => {
-  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
-
+  const [phoneNo, setPhoneNo] = useState("");
+  
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`http://${process.env.REACT_APP_SERVER_URL}/api/users`, {
+
+      const response = await fetch(`http://localhost:4000/v1/auth/admin/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username,
+          fullName,
           password,
           email,
-          role,
+          phoneNo,
         }),
       });
 
@@ -65,18 +64,26 @@ const Signup = () => {
     <div style={{ maxWidth: "300px" }}>
       <Title level={3}>Registration</Title>
 
-      <Form name="registration" layout="vertical" className="mt-5" onFinish={handleSubmit}>
+      <Form
+        name="registration"
+        layout="vertical"
+        className="mt-5"
+        onFinish={handleSubmit}
+      >
         <Form.Item
-          name="username"
-          label="Username"
-          rules={[{ required: true, message: "Please input your username!" },  { min: 3, message: 'Username must be at least 3 characters long' }, ]}
+          name="fullName"
+          label="FullName"
+          rules={[
+            { required: true, message: "Please input your fullname!" },
+            { min: 3, message: "Fullname must be at least 3 characters long" },
+          ]}
           hasFeedback
           validateDebounce={1000}
         >
           <Input
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your fullName"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
             className="bg-white input-active border-radius-0 border-active"
             bordered={false}
           />
@@ -85,7 +92,10 @@ const Signup = () => {
         <Form.Item
           name="password"
           label="Password"
-          rules={[{ required: true, message: "Please input your password!" }, { min: 8, message: 'Password must be at least 8 characters long' },]}
+          rules={[
+            { required: true, message: "Please input your password!" },
+            { min: 8, message: "Password must be at least 8 characters long" },
+          ]}
           hasFeedback
           validateDebounce={1000}
         >
@@ -97,7 +107,6 @@ const Signup = () => {
             bordered={false}
           />
         </Form.Item>
-
 
         <Form.Item
           name="email"
@@ -116,13 +125,33 @@ const Signup = () => {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-
             className="bg-white input-active border-radius-0 border-active"
             bordered={false}
           />
         </Form.Item>
 
         <Form.Item
+          name="phoneNo"
+          label="Phone Number"
+          rules={[
+            {
+              required: true,
+              message: "Please input your phoneNo!",
+            },
+          ]}
+          hasFeedback
+          validateDebounce={1000}
+        >
+          <Input
+            placeholder="Enter your PhoneNo"
+            value={phoneNo}
+            onChange={(e) => setPhoneNo(e.target.value)}
+            className="bg-white input-active border-radius-0 border-active"
+            bordered={false}
+          />
+        </Form.Item>
+
+        {/* <Form.Item
           name="role"
           label="Role"
           rules={[{ required: true, message: "Please select your role!" }]}
@@ -141,7 +170,7 @@ const Signup = () => {
             <Option value="teacher" disabled>Teacher</Option>
             <Option value="student" disabled>Student</Option>
           </Select>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item>
           <Button
