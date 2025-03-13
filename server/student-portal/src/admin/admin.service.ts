@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 
@@ -44,14 +44,18 @@ export class AdminService {
         return admin!;
     }
 
-    async getAdminByEmail(email: string): Promise<AdminPayload>{
-        const admin = await this.adminModel.findOne({ email: email });
+    async getAdminByEmail(email: string): Promise<AdminPayload | null>{
+        try {
+            const admin = await this.adminModel.findOne({ email: email });
+            
+            if (!admin) {            
+                return null;
+            }                        
 
-        if (!admin) {
-            throw new NotFoundException(`Admin of email ${email} not found`)
-        }
-
-        return admin;
+            return admin;            
+        } catch (error) {
+            throw new InternalServerErrorException("DB query error!!");                    
+        }        
     }
 
     async updateAdmin(id: string, body: UpdateAdminDto): Promise<AdminPayload> {

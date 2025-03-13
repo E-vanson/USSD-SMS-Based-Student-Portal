@@ -5,6 +5,7 @@ import { AdminSignInDto } from './dto/adminSignIn.dto';
 import { Public } from 'src/decorators/auth.decorator';
 import { UtilsService } from 'src/utils/utils.service';
 import { UserSigninDto } from './dto/userSignIn.dto';
+import { CreateAdminDto } from 'src/admin/dto/create-admin.dto';
 
 @Controller({path:'auth', version: '1'})
 export class AuthController {
@@ -22,6 +23,13 @@ export class AuthController {
   @Post('user/login')
   userSignIn(@Body() signInDto: UserSigninDto) {
     return this.authService.studentSignIn(signInDto)
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('admin/signup')
+  adminSignUp(@Body() signUpDto: CreateAdminDto) {
+    return this.authService.adminSignUp(signUpDto);
   }
 
 }
