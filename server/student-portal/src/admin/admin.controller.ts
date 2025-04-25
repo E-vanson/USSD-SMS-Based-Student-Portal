@@ -15,6 +15,7 @@ export class AdminController {
 
     @Get()
     getAdmins() {
+        console.log("Inside the get admin");
         return this.adminService.getAdmins();
     }    
 

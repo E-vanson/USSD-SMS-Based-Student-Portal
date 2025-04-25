@@ -1,48 +1,126 @@
 // Dashboard.js
-import React from 'react';
-import { Tabs, Typography, Layout } from 'antd';
-import StudentTable from '../components/Student/studentDataTable';
-import TeacherTable from '../components/Teacher/teacherDataTable';
-const {Content } = Layout;
-
-const { Title, Text} = Typography;
-const { students } = StudentTable;
-const { teachers } = TeacherTable;
-
-const onChange = (key) => {
-  console.log(key);
-}
+// src/components/Admin/adminDataTable.js
+import React, { useState, useEffect } from 'react';
+import { Table, Space, Button, message, Popconfirm } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 
-const Roster = () => {
+const AdminTable = () => {
+  const [admins, setAdmins] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const items = [
+  const getAuthToken = () => {
+    return localStorage.getItem("token") || "";
+  };
+
+  useEffect(() => {
+    fetchAdmins();
+  }, []);
+
+  const fetchAdmins = async () => {
+    const token = getAuthToken();
+    try {
+      const response = await fetch("http://localhost:4000/v1/admin", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error("Unauthorized - Please login again");
+        }
+        throw new Error("Failed to fetch admins");
+      }
+
+      const data = await response.json();
+      setAdmins(data);
+      setLoading(false);
+    } catch (error) {
+      message.error(error.message);
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const token = getAuthToken();
+    try {
+      const response = await fetch(`http://localhost:4000/v1/admin/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error("Unauthorized - Please login again");
+        }
+        throw new Error("Failed to delete admin");
+      }
+
+      message.success("Admin deleted successfully");
+      fetchAdmins(); // Refresh the list
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  
+
+  const columns = [
     {
-      label: 'Students',
-      key: '1',
-      children: <StudentTable students={students} />,
+      title: 'Name',
+      dataIndex: 'fullName',
+      key: 'fullName',
     },
     {
-      label: 'Teachers',
-      key: '2',
-      children: <TeacherTable teachers={teachers} />,
-    }
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Phone Number',
+      dataIndex: 'phoneNo',
+      key: 'phoneNo',
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => (
+        <Space size="middle">
+          <Button 
+            type="primary" 
+            icon={<EditOutlined />} 
+            onClick={() => console.log('Edit', record._id)}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            title="Are you sure you want to delete this admin?"
+            onConfirm={() => handleDelete(record._id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger icon={<DeleteOutlined />}>
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
   ];
 
   return (
-    <Content className="content">
-      <div>
-          <Title level={4}>Roaster</Title>
-          <Text type='secondary'>List of Student(s) and Instructor(s) - Max 10 per page</Text>       
-        
-          <Text type='secondary' style={{float: 'right'}}>Filter by first and last name, age or email</Text>
-
-      </div>
-      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-      <div>
-      </div>
-    </Content>
+    <Table 
+      columns={columns} 
+      dataSource={admins} 
+      rowKey="_id" 
+      loading={loading}
+      pagination={{ pageSize: 10 }}
+    />
   );
-}
+};
 
-export default Roster;
+export default AdminTable;

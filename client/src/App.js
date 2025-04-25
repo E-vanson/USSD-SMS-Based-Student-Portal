@@ -24,6 +24,8 @@ import Logout from "./components/Login/Logout";
 import AppFooter from "./components/Footer/Footer";
 import HomePage from "./pages/HomePage";
 import Stats from "./pages/stats/StatsPage";
+import AdminTable from "./pages/RosterPage";
+import AdminSmsSender from "./pages/notifications";
 
 
 const { Header } = Layout;
@@ -80,9 +82,10 @@ const App = () => {
                 <Route path="/signup" element={<Signup />} />
                 <Route exact path="/courses" element={<ProtectedRoute><CoursesList /></ProtectedRoute>} />
                 <Route path="/courses/:id" element={<ProtectedRoute><CourseDetails /></ProtectedRoute>} />
-                <Route path="/roster" element={<ProtectedRoute><Roster /></ProtectedRoute>} />
+                <Route path="/admins" element={<ProtectedRoute><AdminTable /></ProtectedRoute>} />
                 <Route path="/userprofile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
                 <Route path="/statistic" element={<ProtectedRoute><Stats /></ProtectedRoute>} />    
+                <Route path="/notifications" element={<ProtectedRoute><AdminSmsSender /></ProtectedRoute>} />    
                 <Route
                   path="/"
                   element={

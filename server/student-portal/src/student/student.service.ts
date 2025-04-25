@@ -11,10 +11,15 @@ import { StudentPayload } from './dto/student-payload';
 
 @Injectable()
 export class StudentService {
-    constructor(@InjectModel(Student.name) private studentModel: Model<Student>, private courseService:CourseService) { }
+    constructor(
+        @InjectModel(Student.name)
+        private studentModel: Model<Student>,
+        private courseService: CourseService,
+        ) { }
     
     async createStudent(body: CreateStudentDto): Promise<StudentPayload>{
         const courseId = body.course;
+        console.log("The courseid: ", courseId)
         const course = await this.courseService.getCourse(courseId);
 
         if (!course) {
@@ -45,6 +50,8 @@ export class StudentService {
             regNo: regNo,
             password: password,
             notifications: not,
+            course: courseId,
+            courseName: course.name,
             units: units?.map(unitId => ({
                 unitId: unitId,
                 cat1Grade: null,

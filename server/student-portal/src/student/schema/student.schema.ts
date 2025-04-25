@@ -1,5 +1,6 @@
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Courses } from 'src/course/schema/course.schema';
 
 export type StudentDocument = HydratedDocument<Student>;
 
@@ -42,6 +43,9 @@ export class Student{
 
     @Prop({ type: [{ type: [mongoose.Schema.Types.ObjectId], ref: 'Courses' }] })
     course: mongoose.Schema.Types.ObjectId;
+
+    @Prop()
+    courseName: string;
 
     @Prop()
     notifications: string[];    

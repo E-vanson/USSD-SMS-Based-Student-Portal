@@ -4,6 +4,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background: #fff;
+    margin-bottom: 16px;
 }
 
 .stats-table {
@@ -25,6 +26,22 @@
 
 .action-buttons button {
     margin-right: 8px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stats-card {
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stats-table {
+    margin-top: 24px;
 }
 
 @media (max-width: 768px) {

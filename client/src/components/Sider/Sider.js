@@ -26,8 +26,8 @@ const SideBar = ({ collapsed }) => {
         icon: <PieChartOutlined />,
       },
       {
-        label: <Link to="/roster">Roster</Link>,
-        key: "roster",
+        label: <Link to="/admins">Admins</Link>,
+        key: "admins",
         icon: <UnorderedListOutlined />,
       },
       {
@@ -39,6 +39,11 @@ const SideBar = ({ collapsed }) => {
       {
         label: <Link to="/userprofile">User Profile</Link>,
         key: "userprofile",
+        icon: <UserOutlined />,
+      },
+      {
+        label: <Link to="/notifications">notification</Link>,
+        key: "notification",
         icon: <UserOutlined />,
       }
     );

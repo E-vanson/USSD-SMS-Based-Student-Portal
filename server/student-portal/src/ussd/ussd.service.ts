@@ -3,11 +3,46 @@ import * as UssdMenuBuilder from 'ussd-menu-builder';
 import { Request, Response } from 'express';
 import { StudentService } from 'src/student/student.service';
 import { AuthService } from 'src/auth/auth.service';
+import axios from 'axios';
 @Injectable()
 export class UssdService {
+    
     constructor(@Inject('USSD_MENU') private menu: UssdMenuBuilder, private studentService:StudentService, private authService:AuthService) {
         this.initializeMenu()
-     }
+    }
+
+  private readonly ngrokUrl = 'http://localhost:5001'; // Replace with your real ngrok URL
+
+  private async sendSMS(phoneNumber: string, message: string) {
+    try {
+      const formatted = phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`;
+      const res = await axios.post(`${this.ngrokUrl}/send-sms`, {
+        phoneNumber: formatted,
+        message: message
+      });
+      return res.data;
+    } catch (error) {
+      console.error("Failed to send SMS:", error.message);
+    }
+  }
+
+  private getRandomCourses(): string[] {
+    const allCourses = [
+      "Introduction to Programming: A",
+      "Database Systems: A",
+      "Computer Networks: B",
+      "Software Engineering: C",
+      "Artificial Intelligence: A",
+      "Data Structures: A",
+      "Operating Systems: C ",
+      "Web Development: B",
+      "Cybersecurity: A",
+      "Mobile Development: B"
+    ];
+    return allCourses.sort(() => 0.5 - Math.random()).slice(0, 8);
+  }
+
+    
     
     private initializeMenu() {
         let regNo: string;
@@ -72,7 +107,7 @@ export class UssdService {
                     this.menu.con(                
                         "Select a service: " +                        
                         "\n1. Get Examination Results" +                        
-                        "\n2. Pay Fees" +                        
+                        "\n2. Register Units" +                        
                         "\n3. Get Latest Updates"                        
                     );                    
                 }                
@@ -108,10 +143,125 @@ export class UssdService {
         })
 
         this.menu.state("1.1", {
-            run: () => {                
-                this.menu.end("Your request is being processed kindly wait for a sms message");                
-            },            
-        });        
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                const courses = this.getRandomCourses();
+                const message = `Your courses for 1.1:\n${courses.join('\n')}`;
+
+                try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Results sent via SMS. Please check your phone.");
+                } catch (error) {
+                this.menu.end("Failed to send SMS. Try again later.");
+                }
+            }
+        });
+
+        this.menu.state("1.2", {
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                const courses = this.getRandomCourses();
+                const message = `Your courses for 1.1:\n${courses.join('\n')}`;
+
+                try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Results sent via SMS. Please check your phone.");
+                } catch (error) {
+                this.menu.end("Failed to send SMS. Try again later.");
+                }
+            }
+        });
+
+        this.menu.state("2.1", {
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                const courses = this.getRandomCourses();
+                const message = `Your courses for 1.1:\n${courses.join('\n')}`;
+
+                try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Results sent via SMS. Please check your phone.");
+                } catch (error) {
+                this.menu.end("Failed to send SMS. Try again later.");
+                }
+            }
+        });
+
+        this.menu.state("2.2", {
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                const courses = this.getRandomCourses();
+                const message = `Your courses for 1.1:\n${courses.join('\n')}`;
+
+                try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Results sent via SMS. Please check your phone.");
+                } catch (error) {
+                this.menu.end("Failed to send SMS. Try again later.");
+                }
+            }
+        });
+
+        this.menu.state("2.2", {
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                const courses = this.getRandomCourses();
+                const message = `Your courses for 1.1:\n${courses.join('\n')}`;
+
+                try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Results sent via SMS. Please check your phone.");
+                } catch (error) {
+                this.menu.end("Failed to send SMS. Try again later.");
+                }
+            }
+        });
+
+        this.menu.state("3.2", {
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                const courses = this.getRandomCourses();
+                const message = `Your courses for 1.1:\n${courses.join('\n')}`;
+
+                try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Results sent via SMS. Please check your phone.");
+                } catch (error) {
+                this.menu.end("Failed to send SMS. Try again later.");
+                }
+            }
+        });
+
+        this.menu.state("4.1", {
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                const courses = this.getRandomCourses();
+                const message = `Your courses for 1.1:\n${courses.join('\n')}`;
+
+                try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Results sent via SMS. Please check your phone.");
+                } catch (error) {
+                this.menu.end("Failed to send SMS. Try again later.");
+                }
+            }
+        });
+
+        this.menu.state("4.2", {
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                const courses = this.getRandomCourses();
+                const message = `Your courses for 1.1:\n${courses.join('\n')}`;
+
+                try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Results sent via SMS. Please check your phone.");
+                } catch (error) {
+                this.menu.end("Failed to send SMS. Try again later.");
+                }
+            }
+        });
+       
 
         this.menu.state("Get Latest Updates", {
             run: () => {
@@ -120,33 +270,32 @@ export class UssdService {
                     "\n1. Academic " +
                     "\n2. Financial " +
                     "\n3. General"
-                )                
+                )
             },
             next: {
                 1: "Academic",
-                2: "Financial ", 
+                2: "Financial ",
                 3: "General"
             },
             defaultNext: "Invalid Option"
-        })
+        });
 
-        this.menu.state("Academic", {
-            run: () => {                
-                this.menu.end("Your request is being processed kindly wait for a sms message");                
-            },            
-        });     
+        ["Academic", "Financial", "General"].forEach(state => {
+        this.menu.state(state, {
+            run: async () => {
+                const phoneNumber = this.menu.args.phoneNumber;
+                
+            const message = `${state} updates will be sent shortly.`;
 
-        this.menu.state("Financial", {
-            run: () => {                
-                this.menu.end("Your request is being processed kindly wait for a sms message");                
-            },            
-        });     
-
-        this.menu.state("General", {
-            run: () => {                
-                this.menu.end("Your request is being processed kindly wait for a sms message");                
-            },            
-        });     
+            try {
+                await this.sendSMS(phoneNumber, message);
+                this.menu.end("Update sent via SMS. Please check your phone.");
+            } catch (error) {
+                this.menu.end("SMS delivery failed. Please try again later.");
+            }
+            }
+        });
+        });
   }
     
     

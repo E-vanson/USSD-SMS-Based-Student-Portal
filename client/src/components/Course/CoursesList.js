@@ -37,7 +37,7 @@ const CoursesList = () => {
     const fetchCourses = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/courses`, {
+        const response = await fetch(`http://localhost:4000/v1/course`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

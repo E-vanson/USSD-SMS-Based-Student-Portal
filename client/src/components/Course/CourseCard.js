@@ -38,7 +38,7 @@ const CourseCard = ({ course }) => {
   };
 
   // Get the color based on the course level
-  const tagColor = difficultyColors[course.level] || "default";
+  // const tagColor = difficultyColors[course.level] || "default";
 
   const handleDelete = async () => {
     try {
@@ -106,7 +106,7 @@ const CourseCard = ({ course }) => {
 
       // Make the actual API call to update the course details
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}/api/courses/${course._id}`,
+        `http://localhost:4000/v1/course/${course._id}`,
         {
           method: "PUT",
           body: JSON.stringify(values),
@@ -159,7 +159,7 @@ const CourseCard = ({ course }) => {
           loading ? (
             <Skeleton.Input style={{ width: 100 }} active />
           ) : (
-            course.abbreviation.toUpperCase()
+            course.code.toUpperCase()
           )
         }
         style={{ width: 300 }}
@@ -168,21 +168,21 @@ const CourseCard = ({ course }) => {
             {loading ? (
               <Skeleton.Input style={{ width: 60 }} active />
             ) : (
-              `${course.online ? "Online" : "Onsite"}`
+              `${course.units[0].length} Units`
             )}
           </Tag>,
           <Tag key="length" color="gold" bordered={false}>
             {loading ? (
               <Skeleton.Input style={{ width: 80 }} active />
             ) : (
-              `${course.length + " Weeks"}`
+              `4 Yrs`
             )}
           </Tag>,
         ]}
         actions={[
           <Popconfirm
             key="delete"
-            title={`Are you sure you want to delete ${course.courseName}?`}
+            title={`Are you sure you want to delete ${course.name}?`}
             onConfirm={handleDelete}
             okText="Yes"
             cancelText="No"
@@ -206,33 +206,33 @@ const CourseCard = ({ course }) => {
             loading ? (
               <Skeleton.Input style={{ width: 200 }} active />
             ) : (
-              course.courseName
+              course.name
             )
           }
-          description={
-            <p>
-              {loading ? (
-                <>
-                  <Skeleton.Input style={{ width: 300 }} active />
-                  <br />
-                  <br />
-                  <Skeleton.Input style={{ width: 200 }} active />
-                </>
-              ) : (
-                <>
-                  {`${course.description.substring(0, 100) + "..."}`} <br />
-                  <br />
-                  {/* Add course difficulity text  */}
-                  <Text type="secondary">Difficulty: </Text>
-                  <Tag bordered={false} color={tagColor}>
-                    {`${course.level
-                      .charAt(0)
-                      .toUpperCase()}${course.level.slice(1)}`}
-                  </Tag>
-                </>
-              )}
-            </p>
-          }
+          // description={
+          //   // <p>
+          //   //   {loading ? (
+          //   //     <>
+          //   //       <Skeleton.Input style={{ width: 300 }} active />
+          //   //       <br />
+          //   //       <br />
+          //   //       <Skeleton.Input style={{ width: 200 }} active />
+          //   //     </>
+          //   //   ) : (
+          //   //     <>
+          //   //       {`${course.description.substring(0, 100) + "..."}`} <br />
+          //   //       <br />
+          //   //       {/* Add course difficulity text  */}
+          //   //       <Text type="secondary">Difficulty: </Text>
+          //   //       <Tag bordered={false} color={tagColor}>
+          //   //         {`${course.level
+          //   //           .charAt(0)
+          //   //           .toUpperCase()}${course.level.slice(1)}`}
+          //   //       </Tag>
+          //   //     </>
+          //   //   )}
+          //   // </p>
+          // }
         />
       </Card>
       <Modal
@@ -251,7 +251,7 @@ const CourseCard = ({ course }) => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             name="description"
             label="Course Description"
             rules={[
@@ -262,8 +262,8 @@ const CourseCard = ({ course }) => {
             ]}
           >
             <Input.TextArea />
-          </Form.Item>
-          <Form.Item
+          </Form.Item> */}
+          {/* <Form.Item
             name="level"
             label="Difficulty Level"
             rules={[
@@ -276,7 +276,7 @@ const CourseCard = ({ course }) => {
               <Option value="advanced">Advanced</Option>
               <Option value="expert">Expert</Option>
             </Select>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name="length"
             label="Course Length"

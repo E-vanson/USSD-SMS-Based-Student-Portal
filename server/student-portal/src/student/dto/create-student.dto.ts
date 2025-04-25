@@ -19,6 +19,9 @@ export class CreateStudentDto{
 
     @IsString()
     course: string;
+
+    @IsString()
+    courseName: string;
     
     @IsArray()
     units: string[];
